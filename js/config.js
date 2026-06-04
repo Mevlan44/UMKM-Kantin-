@@ -1,7 +1,5 @@
 // ===== KONFIGURASI KANTINKU =====
-// Setelah deploy Google Apps Script, paste URL-nya di bawah ini
 
 const CONFIG = {
-  // Ganti PASTE_URL_DISINI dengan URL dari Google Apps Script deployment
-  SCRIPT_URL: 'PASTE_URL_DISINI'
+  SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzGVsxKF-ZmDBtOjZrzQKHfiZNwzXnQIkgFOUkSi-HTmxsD2TBostGgM084vfI9ae0fIg/exec'
 };
