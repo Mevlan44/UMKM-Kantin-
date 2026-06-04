@@ -113,39 +113,78 @@ function removeUpload() {
   document.getElementById('btnSubmit').disabled = true;
 }
 
-function submitOrder() {
+async function submitOrder() {
   if (!uploadedFile) {
     showToast('Upload bukti pembayaran terlebih dahulu', 'error');
     return;
   }
 
   const cartData = JSON.parse(localStorage.getItem('activeCart') || '{"items":[]}');
+  const user     = JSON.parse(localStorage.getItem('kantinku_user') || '{}');
   const subtotal = (cartData.items || []).reduce((s, i) => s + i.price * i.qty, 0);
 
-  // Save to history
-  const history = JSON.parse(localStorage.getItem('kantinku_history') || '[]');
-  const newOrder = {
-    id: Date.now(),
-    kantinId: cartData.kantinId,
-    kantinName: `Kantin ${cartData.kantinId}`,
-    items: cartData.items,
-    total: subtotal,
-    method: selectedMethod,
-    note: document.getElementById('orderNote').value,
-    status: 'pending',
-    date: new Date().toLocaleString('id-ID'),
-    proof: 'uploaded'
-  };
-  history.unshift(newOrder);
-  localStorage.setItem('kantinku_history', JSON.stringify(history));
+  // Tampilkan loading
+  const btnSubmit = document.getElementById('btnSubmit');
+  btnSubmit.disabled = true;
+  btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
 
-  // Clear cart
-  localStorage.removeItem('activeCart');
-  localStorage.removeItem(`cart_${cartData.kantinId}`);
+  try {
+    let photoUrl = '-';
 
-  // Show success
-  document.getElementById('successOverlay').classList.add('active');
-  document.getElementById('successModal').style.display = 'block';
+    // Cek apakah Apps Script sudah dikonfigurasi
+    if (typeof CONFIG !== 'undefined' && CONFIG.SCRIPT_URL !== 'PASTE_URL_DISINI') {
+      showToast('Mengupload foto bukti...', 'info');
+      photoUrl = await uploadToGDrive(uploadedFile);
+
+      showToast('Menyimpan pesanan...', 'info');
+      const orderId = await saveOrderToSheets({
+        userName:   user.name  || 'Tidak diketahui',
+        userEmail:  user.email || '-',
+        userKelas:  user.kelas || '-',
+        kantinName: cartData.kantinName || `Kantin ${cartData.kantinId}`,
+        items:      cartData.items || [],
+        total:      subtotal,
+        method:     selectedMethod,
+        note:       document.getElementById('orderNote').value,
+        photoUrl:   photoUrl
+      });
+      console.log('✅ Pesanan tersimpan:', orderId);
+    } else {
+      // Mode offline - Apps Script belum dikonfigurasi
+      console.warn('⚠️ CONFIG.SCRIPT_URL belum diisi. Data disimpan lokal saja.');
+    }
+
+    // Simpan ke localStorage (history lokal)
+    const history  = JSON.parse(localStorage.getItem('kantinku_history') || '[]');
+    const newOrder = {
+      id:         Date.now(),
+      kantinId:   cartData.kantinId,
+      kantinName: cartData.kantinName || `Kantin ${cartData.kantinId}`,
+      items:      cartData.items,
+      total:      subtotal,
+      method:     selectedMethod,
+      note:       document.getElementById('orderNote').value,
+      status:     'pending',
+      date:       new Date().toLocaleString('id-ID'),
+      photoUrl:   photoUrl
+    };
+    history.unshift(newOrder);
+    localStorage.setItem('kantinku_history', JSON.stringify(history));
+
+    // Bersihkan cart
+    localStorage.removeItem('activeCart');
+    localStorage.removeItem(`cart_${cartData.kantinId}`);
+
+    // Tampilkan sukses
+    document.getElementById('successOverlay').classList.add('active');
+    document.getElementById('successModal').style.display = 'block';
+
+  } catch (err) {
+    console.error('❌ Error:', err);
+    showToast('Gagal mengirim pesanan: ' + err.message, 'error');
+    btnSubmit.disabled = false;
+    btnSubmit.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Pesanan';
+  }
 }
 
 // Drag & drop support
