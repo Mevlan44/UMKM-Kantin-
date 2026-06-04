@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profil - KantinKu</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/profile.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body class="app-body">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <button class="back-btn" onclick="history.back()">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <span class="navbar-title">Profil Saya</span>
+    </div>
+    <div class="navbar-right">
+      <button class="nav-icon-btn" id="editToggleBtn" onclick="toggleEdit()">
+        <i class="fas fa-edit"></i>
+      </button>
+    </div>
+  </nav>
+
+  <main class="main-content profile-main">
+
+    <!-- PROFILE HEADER -->
+    <div class="profile-header-card">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar" id="profileAvatarDisplay">
+          <img src="https://ui-avatars.com/api/?name=User&background=cc0000&color=fff&size=100" alt="avatar" id="avatarImg"/>
+        </div>
+        <button class="avatar-edit-btn" id="avatarEditBtn" style="display:none;" onclick="document.getElementById('avatarInput').click()">
+          <i class="fas fa-camera"></i>
+        </button>
+        <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="changeAvatar(event)"/>
+      </div>
+      <div class="profile-header-info">
+        <h2 id="displayName">Nama Pengguna</h2>
+        <p id="displayRole" class="profile-role-badge">Siswa</p>
+        <p id="displayKelas" class="profile-kelas">XII RPL 1</p>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="profile-stats">
+      <div class="stat-item">
+        <strong id="statTotal">12</strong>
+        <span>Total Pesanan</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <strong id="statConfirmed">10</strong>
+        <span>Dikonfirmasi</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <strong id="statPending">2</strong>
+        <span>Menunggu</span>
+      </div>
+    </div>
+
+    <!-- PROFILE FORM -->
+    <div class="profile-form-card">
+      <h4>Informasi Akun</h4>
+
+      <div class="profile-field">
+        <label><i class="fas fa-user"></i> Nama Lengkap</label>
+        <input type="text" id="fieldName" value="Nama Pengguna" disabled/>
+      </div>
+
+      <div class="profile-field">
+        <label><i class="fas fa-envelope"></i> Email</label>
+        <input type="email" id="fieldEmail" value="user@smktelkom.sch.id" disabled/>
+      </div>
+
+      <div class="profile-field">
+        <label><i class="fas fa-id-badge"></i> Role</label>
+        <input type="text" id="fieldRole" value="Siswa" disabled/>
+      </div>
+
+      <div class="profile-field" id="fieldKelasWrap">
+        <label><i class="fas fa-school"></i> Kelas</label>
+        <input type="text" id="fieldKelas" value="XII RPL 1" disabled/>
+      </div>
+
+      <div class="profile-field" id="fieldJabatanWrap" style="display:none;">
+        <label><i class="fas fa-briefcase"></i> Jabatan / Divisi</label>
+        <input type="text" id="fieldJabatan" value="-" disabled/>
+      </div>
+
+      <div class="profile-actions" id="profileActions" style="display:none;">
+        <button class="btn-secondary" onclick="cancelEdit()">Batal</button>
+        <button class="btn-primary" onclick="saveProfile()">
+          <i class="fas fa-save"></i> Simpan
+        </button>
+      </div>
+    </div>
+
+    <!-- QUICK LINKS -->
+    <div class="profile-links">
+      <div class="profile-link-item" onclick="window.location.href='settings.html'">
+        <div class="pl-icon red"><i class="fas fa-history"></i></div>
+        <span>Riwayat Pesanan</span>
+        <i class="fas fa-chevron-right"></i>
+      </div>
+      <div class="profile-link-item" onclick="window.location.href='settings.html'">
+        <div class="pl-icon gray"><i class="fas fa-cog"></i></div>
+        <span>Pengaturan</span>
+        <i class="fas fa-chevron-right"></i>
+      </div>
+      <div class="profile-link-item" onclick="handleLogout()">
+        <div class="pl-icon red"><i class="fas fa-sign-out-alt"></i></div>
+        <span style="color:var(--red)">Keluar</span>
+        <i class="fas fa-chevron-right"></i>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a href="home.html" class="bottom-nav-item">
+      <i class="fas fa-home"></i><span>Home</span>
+    </a>
+    <a href="settings.html?tab=riwayat" class="bottom-nav-item">
+      <i class="fas fa-history"></i><span>Riwayat</span>
+    </a>
+    <a href="profile.html" class="bottom-nav-item active">
+      <i class="fas fa-user"></i><span>Profil</span>
+    </a>
+    <a href="settings.html?tab=pengaturan" class="bottom-nav-item">
+      <i class="fas fa-cog"></i><span>Pengaturan</span>
+    </a>
+  </nav>
+
+  <script src="js/profile.js"></script>
+</body>
+</html>

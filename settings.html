@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pengaturan & Riwayat - KantinKu</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/settings.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body class="app-body">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <button class="back-btn" onclick="window.location.href='home.html'">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <span class="navbar-title">Pengaturan</span>
+    </div>
+  </nav>
+
+  <main class="main-content settings-main">
+
+    <!-- TABS -->
+    <div class="settings-tabs">
+      <button class="stab active" onclick="switchTab('riwayat', this)">
+        <i class="fas fa-history"></i> Riwayat
+      </button>
+      <button class="stab" onclick="switchTab('draft', this)">
+        <i class="fas fa-file-alt"></i> Draft
+      </button>
+      <button class="stab" onclick="switchTab('pengaturan', this)">
+        <i class="fas fa-cog"></i> Pengaturan
+      </button>
+    </div>
+
+    <!-- TAB: RIWAYAT -->
+    <div class="tab-content" id="tab-riwayat">
+      <div class="filter-row">
+        <button class="filter-btn active" onclick="filterHistory('semua', this)">Semua</button>
+        <button class="filter-btn" onclick="filterHistory('confirmed', this)">Dikonfirmasi</button>
+        <button class="filter-btn" onclick="filterHistory('pending', this)">Menunggu</button>
+        <button class="filter-btn" onclick="filterHistory('rejected', this)">Ditolak</button>
+      </div>
+
+      <div class="history-list" id="historyList">
+        <!-- Sample history items -->
+        <div class="history-card" data-status="confirmed">
+          <div class="history-card-header">
+            <div class="history-kantin">
+              <div class="hk-icon"><i class="fas fa-store"></i></div>
+              <div>
+                <strong>Kantin 1</strong>
+                <span>20 Apr 2026, 08:30</span>
+              </div>
+            </div>
+            <span class="badge-confirmed">Dikonfirmasi</span>
+          </div>
+          <div class="history-items">
+            <p>• Ramen Rasa Kari x1</p>
+            <p>• Ayam Goreng Skak Saos Keju x1</p>
+          </div>
+          <div class="history-footer">
+            <span class="history-total">Rp 25.000</span>
+            <button class="btn-outline-sm" onclick="viewDetail('1')">Detail</button>
+          </div>
+        </div>
+
+        <div class="history-card" data-status="pending">
+          <div class="history-card-header">
+            <div class="history-kantin">
+              <div class="hk-icon"><i class="fas fa-store"></i></div>
+              <div>
+                <strong>Kantin 6</strong>
+                <span>22 Apr 2026, 09:15</span>
+              </div>
+            </div>
+            <span class="badge-pending">Menunggu</span>
+          </div>
+          <div class="history-items">
+            <p>• Ayam Goreng Kremes x2</p>
+            <p>• Tempe x1</p>
+          </div>
+          <div class="history-footer">
+            <span class="history-total">Rp 18.000</span>
+            <button class="btn-outline-sm" onclick="viewDetail('2')">Detail</button>
+          </div>
+        </div>
+
+        <div class="history-card" data-status="rejected">
+          <div class="history-card-header">
+            <div class="history-kantin">
+              <div class="hk-icon"><i class="fas fa-store"></i></div>
+              <div>
+                <strong>Kantin 11</strong>
+                <span>18 Apr 2026, 11:00</span>
+              </div>
+            </div>
+            <span class="badge-rejected">Ditolak</span>
+          </div>
+          <div class="history-items">
+            <p>• Soto Jumbo x1</p>
+          </div>
+          <div class="history-footer">
+            <span class="history-total">Rp 15.000</span>
+            <button class="btn-outline-sm" onclick="viewDetail('3')">Detail</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: DRAFT -->
+    <div class="tab-content" id="tab-draft" style="display:none;">
+      <div class="draft-list" id="draftList">
+        <div class="history-card draft-card">
+          <div class="history-card-header">
+            <div class="history-kantin">
+              <div class="hk-icon draft"><i class="fas fa-file-alt"></i></div>
+              <div>
+                <strong>Kantin 11</strong>
+                <span>Draft - Belum dibayar</span>
+              </div>
+            </div>
+            <span class="badge-draft">Draft</span>
+          </div>
+          <div class="history-items">
+            <p>• Kwetiau Pedes x1</p>
+            <p>• Mie Ayam Ori x1</p>
+          </div>
+          <div class="history-footer">
+            <span class="history-total">Rp 22.000</span>
+            <button class="btn-primary-sm" onclick="window.location.href='payment.html'">Bayar Sekarang</button>
+          </div>
+        </div>
+
+        <div class="empty-state" id="draftEmpty" style="display:none;">
+          <i class="fas fa-file-alt"></i>
+          <p>Tidak ada draft pesanan</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: PENGATURAN -->
+    <div class="tab-content" id="tab-pengaturan" style="display:none;">
+      <div class="settings-section">
+        <p class="settings-section-label">Akun</p>
+        <div class="settings-item" onclick="window.location.href='profile.html'">
+          <div class="settings-item-left">
+            <div class="settings-icon red"><i class="fas fa-user"></i></div>
+            <span>Edit Profil</span>
+          </div>
+          <i class="fas fa-chevron-right"></i>
+        </div>
+        <div class="settings-item">
+          <div class="settings-item-left">
+            <div class="settings-icon gray"><i class="fas fa-lock"></i></div>
+            <span>Ubah Password</span>
+          </div>
+          <i class="fas fa-chevron-right"></i>
+        </div>
+        <div class="settings-item">
+          <div class="settings-item-left">
+            <div class="settings-icon gray"><i class="fas fa-envelope"></i></div>
+            <span>Email Terdaftar</span>
+          </div>
+          <span class="settings-value" id="settingsEmail">user@smktelkom.sch.id</span>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <p class="settings-section-label">Notifikasi</p>
+        <div class="settings-item">
+          <div class="settings-item-left">
+            <div class="settings-icon red"><i class="fas fa-bell"></i></div>
+            <span>Notifikasi Pesanan</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" checked/>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="settings-item">
+          <div class="settings-item-left">
+            <div class="settings-icon gray"><i class="fas fa-bullhorn"></i></div>
+            <span>Notifikasi Promo</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox"/>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <p class="settings-section-label">Lainnya</p>
+        <div class="settings-item">
+          <div class="settings-item-left">
+            <div class="settings-icon gray"><i class="fas fa-question-circle"></i></div>
+            <span>Bantuan & FAQ</span>
+          </div>
+          <i class="fas fa-chevron-right"></i>
+        </div>
+        <div class="settings-item">
+          <div class="settings-item-left">
+            <div class="settings-icon gray"><i class="fas fa-shield-alt"></i></div>
+            <span>Kebijakan Privasi</span>
+          </div>
+          <i class="fas fa-chevron-right"></i>
+        </div>
+        <div class="settings-item" onclick="handleLogout()">
+          <div class="settings-item-left">
+            <div class="settings-icon red"><i class="fas fa-sign-out-alt"></i></div>
+            <span style="color:var(--red)">Keluar</span>
+          </div>
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </div>
+
+      <div class="app-version-block">
+        <img src="assets/logo-smktelkom.png" alt="SMK Telkom Malang" style="width:40px;height:40px;object-fit:contain;opacity:0.4;"/>
+        <p class="app-version">KantinKu v1.0.0 · SMK Telkom Malang</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a href="home.html" class="bottom-nav-item">
+      <i class="fas fa-home"></i><span>Home</span>
+    </a>
+    <a href="settings.html?tab=riwayat" class="bottom-nav-item" id="navRiwayat">
+      <i class="fas fa-history"></i><span>Riwayat</span>
+    </a>
+    <a href="profile.html" class="bottom-nav-item">
+      <i class="fas fa-user"></i><span>Profil</span>
+    </a>
+    <a href="settings.html?tab=pengaturan" class="bottom-nav-item" id="navPengaturan">
+      <i class="fas fa-cog"></i><span>Pengaturan</span>
+    </a>
+  </nav>
+
+  <!-- DETAIL MODAL -->
+  <div class="modal-overlay" id="detailOverlay" onclick="closeDetail()"></div>
+  <div class="detail-modal" id="detailModal" style="display:none;">
+    <div class="detail-modal-header">
+      <h4>Detail Pesanan</h4>
+      <button onclick="closeDetail()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="detail-modal-body" id="detailBody">
+      <!-- filled by JS -->
+    </div>
+  </div>
+
+  <script src="js/settings.js"></script>
+</body>
+</html>
